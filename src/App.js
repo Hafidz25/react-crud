@@ -78,13 +78,21 @@ function App() {
   }
 
   function handleDelete(id){
+    var answer = window.confirm("Anda yakin ingin menghapus?");
     let data =[...contacts];
     let filterData = data.filter(contact => contact.id !== id);
     setContacts(filterData);
-    
-    axios.delete(`http://localhost:3000/contacts/${id}`).then(res => {
+    if(answer == true){
+      axios.delete(`http://localhost:3000/contacts/${id}`).then(res => {
       alert("Berhasil menghapus data");
     });
+    } else {
+        axios.get("http://localhost:3000/contacts").then(res => {
+        console.log(res.data);
+        setContacts(res?.data ?? []);
+      });
+    }
+    
   }
 
   return (
